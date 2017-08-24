@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="AgendamentoXamarinForms.Views.DetalhesAtividadePage"
+             xmlns:base="clr-namespace:AgendamentoXamarinForms.Views;assembly=AgendamentoXamarinForms"
+             Title="Atividade detalhes"
+             BackgroundColor="White">
+    <StackLayout>
+        <StackLayout HorizontalOptions="FillAndExpand" BackgroundColor="#c3c3c3" Margin="10" Padding="5">
+            <Label Text="{Binding Atividade.nome}" HorizontalOptions="CenterAndExpand" TextColor="Black" FontSize="Large"></Label>
+        </StackLayout>
+        <StackLayout Padding="10" VerticalOptions="StartAndExpand">
+            <Label Text="{Binding Atividade.descricao}" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"></Label>
+        </StackLayout>
+        <BoxView HeightRequest=".5" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"></BoxView>
+        <StackLayout Padding="10" VerticalOptions="Start">
+            <StackLayout Orientation="Horizontal">
+                <Frame HasShadow="False" Margin="0" Padding="5,3,5,3" BackgroundColor="#c3c3c3">
+                    <Label Text="{Binding Atividade.DiaSemana}" TextColor="Black"></Label>
+                </Frame>
+                <Label Text="{Binding Atividade.Horario}" VerticalOptions="Center" TextColor="Black"></Label>
+                <StackLayout BackgroundColor="{Binding Atividade.Color}" Padding="5,2,5,2" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                    <Label Text="{Binding Atividade.Capacidade}" TextColor="Black"></Label>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="-5">
+                <Image Source="area.png" Scale=".7" VerticalOptions="Center"></Image>
+                <Label Text="{Binding Atividade.area}" TextColor="Black" VerticalOptions="Center"></Label>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="-5">
+                <Image Source="professor.png" Scale=".7" VerticalOptions="Center"></Image>
+                <Label Text="{Binding Atividade.professor}" TextColor="Black" VerticalOptions="Center"></Label>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="-5">
+                <Image Source="nivel.png" Scale=".7" VerticalOptions="Center"></Image>
+                <Label Text="{Binding Atividade.Niveis}" TextColor="Black" VerticalOptions="Center"></Label>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout VerticalOptions="StartAndExpand">
+            <BoxView HeightRequest=".5" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"></BoxView>
+            <Button
+                WidthRequest="130"
+                FontSize="12"
+                TextColor="Black"
+                HeightRequest="35"
+                IsEnabled="{Binding Atividade.Botao.Action}"
+                Text="{Binding Atividade.Botao.Text}"
+                Command="{Binding AcaoCommand}"
+                HorizontalOptions="EndAndExpand" Margin="0"/>
+        </StackLayout>
+    </StackLayout>
+</base:BasePage>

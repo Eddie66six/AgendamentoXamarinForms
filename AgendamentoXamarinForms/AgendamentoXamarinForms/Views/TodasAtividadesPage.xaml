@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="AgendamentoXamarinForms.Views.TodasAtividadesPage"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:base="clr-namespace:AgendamentoXamarinForms.Views;assembly=AgendamentoXamarinForms"
+             xmlns:control="clr-namespace:AgendamentoXamarinForms.Controls;assembly=AgendamentoXamarinForms"
+             xmlns:converters="clr-namespace:AgendamentoXamarinForms.Converters;assembly=AgendamentoXamarinForms"
+             x:Name="atividade"
+             Title="Atividades" BackgroundColor="White">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="inverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Root">
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" Opacity="{Binding Opacity}">
+            <StackLayout Spacing="0" VerticalOptions="FillAndExpand">
+                <!--controle de data-->
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="&lt;&lt;" HorizontalOptions="StartAndExpand" Command="{Binding AlterDateCommand}" CommandParameter="-"></Button>
+                    <Label Text="{Binding Data, StringFormat='{0:dd/MM/yyyy}'}" HorizontalOptions="Center" VerticalOptions="CenterAndExpand"></Label>
+                    <Button Text="&gt;&gt;" HorizontalOptions="EndAndExpand" Command="{Binding AlterDateCommand}" CommandParameter="+"></Button>
+                </StackLayout>
+                <!--disponiveis ou todos-->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                    <Label FontSize="12" Text="Apenas Disponiveis" VerticalOptions="CenterAndExpand" TextColor="Black"></Label>
+                    <control:CustomSwitch IsToggled="{Binding ApenasDisponiveis}" Command="{Binding AlterarDisponivelCommand}"></control:CustomSwitch>
+                    <!--<Button Text="{Binding Disponivel}" Command="{Binding AlterarDisponivelCommand}"></Button>-->
+                </StackLayout>
+                <StackLayout HorizontalOptions="FillAndExpand" Opacity=".7">
+                    <BoxView HeightRequest=".5" BackgroundColor="Gray"></BoxView>
+                </StackLayout>
+                <!--lista-->
+                <ListView x:Name="listView" ItemsSource="{Binding Atividades}" HasUnevenRows="True">
+                    <ListView.Behaviors>
+                        <b:EventToCommandBehavior Command="{Binding DetalhesAtividadeCommand}" EventName="ItemTapped" EventArgsParameterPath="Item"/>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="10,5,10,5" HorizontalOptions="FillAndExpand">
+                                    <!--header-->
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,0,0,10">
+                                        <Label Text="{Binding nome}" FontSize="14" FontAttributes="Bold" TextColor="Black"></Label>
+                                        <Label Text="{Binding Horario, StringFormat=' - {0}'}" FontSize="12" VerticalOptions="Center" TextColor="Black"></Label>
+                                        <StackLayout BackgroundColor="{Binding Color}" Padding="5,2,5,2" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                                            <Label Text="{Binding Capacidade}" FontSize="12" TextColor="Black"></Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <!--body-->
+                                    <StackLayout Spacing="0" Padding="-5" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                        <Image Source="professor.png" Scale=".7"></Image>
+                                        <Label Text="{Binding professor}" VerticalOptions="Center" FontSize="12" TextColor="Black"></Label>
+                                    </StackLayout>
+                                    <!--body button-->
+                                    <StackLayout Spacing="0" Padding="-5" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                        <StackLayout>
+                                            <Image Source="area.png" Scale=".7"></Image>
+                                        </StackLayout>
+                                        <Label Text="{Binding area}" VerticalOptions="Center" FontSize="12" TextColor="Black"></Label>
+                                        <!--button-->
+                                        <Button
+                                            WidthRequest="130"
+                                            FontSize="12"
+                                            TextColor="Black"
+                                            IsVisible="{Binding Botao.Action}"
+                                            Text="{Binding Botao.Text}"
+                                            Command="{Binding Source={x:Reference atividade}, Path=BindingContext.AcaoCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="35" VerticalOptions="End" HorizontalOptions="EndAndExpand" Margin="0"/>
+                                        <Button
+                                            WidthRequest="130"
+                                            FontSize="12"
+                                            TextColor="Black"
+                                            IsVisible="{Binding Botao.Action, Converter={StaticResource inverseBooleanConverter}}"
+                                            IsEnabled="False"
+                                            Text="{Binding Botao.Text}"
+                                            HeightRequest="35" VerticalOptions="End" HorizontalOptions="EndAndExpand" Margin="0"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout IsVisible="{Binding IsBusy}" Padding="12" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#F3A626"/>
+            <Label Text="Carregando..." HorizontalOptions="Center" TextColor="Black"/>
+        </StackLayout>
+    </AbsoluteLayout>
+</base:BasePage>
