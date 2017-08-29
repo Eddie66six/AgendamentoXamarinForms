@@ -12,7 +12,7 @@ namespace AgendamentoXamarinForms
         {
             InitializeComponent();
 
-            NavigationService.NavigateAsync("NavigationPage/TodasAtividadesPage");
+            NavigationService.NavigateAsync("NavigationPage/LoginPage");
         }
 
         protected override void RegisterTypes()
@@ -21,6 +21,7 @@ namespace AgendamentoXamarinForms
             Container.RegisterTypeForNavigation<TodasAtividadesPage>();
             Container.RegisterTypeForNavigation<DetalhesAtividadePage>();
             Container.RegisterTypeForNavigation<NumeracaoVagaPage>();
+            Container.RegisterTypeForNavigation<LoginPage>();
         }
     }
 }

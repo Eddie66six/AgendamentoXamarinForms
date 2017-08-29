@@ -42,6 +42,25 @@ namespace AgendamentoXamarinForms.Services
             }
         }
 
+        public async Task<Tuple<UsuarioError, Usuario>> Logar(string usuario, string senha)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync($"https://w12evo.com.br/Mobile/API/Login?Username={usuario}&Password={senha}");
+                var result = await response.Content.ReadAsStringAsync();
+                if (result == null || (response.StatusCode != System.Net.HttpStatusCode.BadRequest && response.StatusCode != System.Net.HttpStatusCode.OK))
+                    return null;
+                if (!result.Contains("Success"))
+                    return new Tuple<UsuarioError, Usuario>(JsonConvert.DeserializeObject<UsuarioError>(result), null);
+                else
+                    return new Tuple<UsuarioError, Usuario>(null, JsonConvert.DeserializeObject<Usuario>(result));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public async Task<Tuple<Errors, string>> ParticiparDaAtividade(string clienteToken, int idConfiguracao, DateTime data, int? numeroVaga)
         {
             try

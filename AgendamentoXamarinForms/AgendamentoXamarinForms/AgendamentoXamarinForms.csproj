@@ -41,15 +41,20 @@
     <Compile Include="Models\Atividade.cs" />
     <Compile Include="Models\Errors.cs" />
     <Compile Include="Models\ParamAtividade.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EvoApi.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DetalhesAtividadePageViewModel.cs" />
+    <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\NumeracaoVagaPageViewModel.cs" />
     <Compile Include="ViewModels\TodasAtividadesPageViewModel.cs" />
     <Compile Include="Views\BasePage.cs" />
     <Compile Include="Views\DetalhesAtividadePage.xaml.cs">
       <DependentUpon>DetalhesAtividadePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NumeracaoVagaPage.xaml.cs">
       <DependentUpon>NumeracaoVagaPage.xaml</DependentUpon>
@@ -138,6 +143,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\NumeracaoVagaPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

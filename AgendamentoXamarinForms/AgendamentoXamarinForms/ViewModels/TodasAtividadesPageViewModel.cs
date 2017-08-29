@@ -54,7 +54,9 @@ namespace AgendamentoXamarinForms.ViewModels
             set { SetProperty(ref _disponivel, value); }
         }
 
-
+        //w1NvI32XNXWIHfnkYACxQA==
+        //txyy5LcO+xUgHZb+ohZSDw==
+        private string token = "txyy5LcO+xUgHZb+ohZSDw==";
         public TodasAtividadesPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
         {
             _navigationService = navigationService;
@@ -81,7 +83,7 @@ namespace AgendamentoXamarinForms.ViewModels
                 Data = Data.AddDays(1);
             AtivarLoad(true);
             var api = new EvoApi();
-            var result = await api.ObterTodasAtividades("txyy5LcO+xUgHZb+ohZSDw==", Data, ApenasDisponiveis);
+            var result = await api.ObterTodasAtividades(token, Data, ApenasDisponiveis);
             if (result == null || result.Item1 != null)
             {
                 await _dialogService.DisplayAlertAsync("Erro", result?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -107,7 +109,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     else
                     {
                         AtivarLoad(true);
-                        var resultP = await api.ParticiparDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", obj.idAtividadeSessao.GetValueOrDefault(), Data, null);
+                        var resultP = await api.ParticiparDaAtividade(token, obj.idAtividadeSessao.GetValueOrDefault(), Data, null);
                         if (resultP == null || resultP.Item1 != null)
                         {
                             await _dialogService.DisplayAlertAsync("Erro", resultP?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -121,7 +123,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     break;
                 case ButtonValue.Fila:
                     AtivarLoad(true);
-                    var resultF = await api.EntrarNaFilaDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", Data, obj.idAtividadeSessao.GetValueOrDefault());
+                    var resultF = await api.EntrarNaFilaDaAtividade(token, Data, obj.idAtividadeSessao.GetValueOrDefault());
                     if (resultF == null || resultF.Item1 != null)
                     {
                         await _dialogService.DisplayAlertAsync("Erro", resultF?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -134,7 +136,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     break;
                 case ButtonValue.Sair:
                     AtivarLoad(true);
-                    var resultS = await api.SairDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", Data, obj.idAtividadeSessao.GetValueOrDefault());
+                    var resultS = await api.SairDaAtividade(token, Data, obj.idAtividadeSessao.GetValueOrDefault());
                     if (resultS == null || resultS.Item1 != null)
                     {
                         await _dialogService.DisplayAlertAsync("Erro", resultS?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -154,11 +156,16 @@ namespace AgendamentoXamarinForms.ViewModels
             await _navigationService.NavigateAsync($"DetalhesAtividadePage?obj={json}");
         }
 
-        public override async Task LoadAsync()
+        public override async void MyOnNavigatedTo(NavigationParameters parameters)
         {
+            if(parameters.ContainsKey("obj"))
+            {
+                token = (string)parameters["obj"];
+            }
+
             AtivarLoad(true);
             var api = new EvoApi();
-            var result = await api.ObterTodasAtividades("txyy5LcO+xUgHZb+ohZSDw==", Data, ApenasDisponiveis);
+            var result = await api.ObterTodasAtividades(token, Data, ApenasDisponiveis);
             if (result == null || result.Item1 != null)
             {
                 await _dialogService.DisplayAlertAsync("Erro", result?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");

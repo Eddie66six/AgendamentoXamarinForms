@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:base="clr-namespace:AgendamentoXamarinForms.Views;assembly=AgendamentoXamarinForms"
+             x:Class="AgendamentoXamarinForms.Views.LoginPage">
+    <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="Root">
+        <StackLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1" Opacity="{Binding Opacity}">
+            <Entry Text="{Binding Usuario}" IsEnabled="{Binding IsVisibleOrEnable}" Placeholder="Usuario"></Entry>
+            <Entry Text="{Binding Senha}" IsEnabled="{Binding IsVisibleOrEnable}" Placeholder="Senha"></Entry>
+            <Button Text="Logar" Command="{Binding LoginCommand}" IsEnabled="{Binding IsVisibleOrEnable}"></Button>
+        </StackLayout>
+        <StackLayout IsVisible="{Binding IsBusy}" Padding="12" AbsoluteLayout.LayoutFlags="PositionProportional" AbsoluteLayout.LayoutBounds="0.5,0.5,-1,-1">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color ="#F3A626"/>
+            <Label Text="Carregando..." HorizontalOptions="Center" TextColor="Black"/>
+        </StackLayout>
+    </AbsoluteLayout>
+</base:BasePage>
