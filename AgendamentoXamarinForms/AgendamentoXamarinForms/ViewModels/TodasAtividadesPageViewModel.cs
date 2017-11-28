@@ -160,7 +160,7 @@ namespace AgendamentoXamarinForms.ViewModels
         {
             if(parameters.ContainsKey("obj"))
             {
-                token = (string)parameters["obj"];
+                token = parameters["obj"].ToString().Replace("[barra]", "/").Replace("#", "[sharp]");
             }
 
             AtivarLoad(true);

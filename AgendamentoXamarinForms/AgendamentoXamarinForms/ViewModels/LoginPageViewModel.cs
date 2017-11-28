@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using System;
 using AgendamentoXamarinForms.Services;
+using Newtonsoft.Json;
 
 namespace AgendamentoXamarinForms.ViewModels
 {
@@ -30,6 +31,8 @@ namespace AgendamentoXamarinForms.ViewModels
             _navigationService = navigationService;
             _dialogService = dialogService;
             LoginCommand = new Command(Login);
+            Usuario = "heitorteste@mail.com";
+            Senha = "hei24112017";
         }
 
         private async void Login()
@@ -48,7 +51,8 @@ namespace AgendamentoXamarinForms.ViewModels
             }
             else
             {
-                await _navigationService.NavigateAsync("TodasAtividadesPage?obj=" + result.Item2.token);
+                var token = result.Item2.token.Replace("/", "[barra]").Replace("#", "[sharp]");
+                await _navigationService.NavigateAsync("TodasAtividadesPage?obj=" + token);
             }
             AtivarLoad(false);
         }
