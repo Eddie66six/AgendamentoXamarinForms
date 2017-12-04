@@ -111,13 +111,14 @@ namespace AgendamentoXamarinForms.ViewModels
                         var resultP = await api.ParticiparDaAtividade(token, obj.idAtividadeSessao.GetValueOrDefault(), Data, null);
                         if (resultP == null || resultP.Item1 != null)
                         {
+                            AtivarLoad(false);
                             await _dialogService.DisplayAlertAsync("Erro", resultP?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
                         }
                         else
                         {
+                            AtivarLoad(false);
                             AlterDate("");
                         }
-                        AtivarLoad(false);
                     }
                     break;
                 case ButtonValue.Fila:
@@ -125,26 +126,28 @@ namespace AgendamentoXamarinForms.ViewModels
                     var resultF = await api.EntrarNaFilaDaAtividade(token, Data, obj.idAtividadeSessao.GetValueOrDefault());
                     if (resultF == null || resultF.Item1 != null)
                     {
+                        AtivarLoad(false);
                         await _dialogService.DisplayAlertAsync("Erro", resultF?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
                     }
                     else
                     {
+                        AtivarLoad(false);
                         AlterDate("");
                     }
-                    AtivarLoad(false);
                     break;
                 case ButtonValue.Sair:
                     AtivarLoad(true);
                     var resultS = await api.SairDaAtividade(token, Data, obj.idAtividadeSessao.GetValueOrDefault());
                     if (resultS == null || resultS.Item1 != null)
                     {
+                        AtivarLoad(false);
                         await _dialogService.DisplayAlertAsync("Erro", resultS?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
                     }
                     else
                     {
+                        AtivarLoad(false);
                         AlterDate("");
                     }
-                    AtivarLoad(false);
                     break;
             }
         }
