@@ -58,9 +58,11 @@ namespace AgendamentoXamarinForms.ViewModels
             set { SetProperty(ref _disableIndex, value); }
         }
 
-        private int? _selecionado;
+        private int? _selecionado = null;
         private int _idConfiguracao;
         private DateTime _data;
+        private string token = null;
+        private bool numerarVagas = false;
 
         public NumeracaoVagaPageViewModel(INavigationService navigationService, IPageDialogService dialogService)
         {
@@ -82,14 +84,14 @@ namespace AgendamentoXamarinForms.ViewModels
 
         private async void Participar()
         {
-            if (_selecionado == null)
+            if (_selecionado == null && numerarVagas)
             {
                 await _dialogService.DisplayAlertAsync("Erro", "Selecione uma vaga", "OK");
                 return;
             }
             AtivarLoad(true);
             var api = new EvoApi();
-            var resultP = await api.ParticiparDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", _idConfiguracao, _data, _selecionado);
+            var resultP = await api.ParticiparDaAtividade(token, _idConfiguracao, _data, _selecionado);
             if (resultP == null || resultP.Item1 != null)
             {
                 AtivarLoad(false);
@@ -110,6 +112,7 @@ namespace AgendamentoXamarinForms.ViewModels
             AtivarLoad(true);
             if (parameters.ContainsKey("obj"))
             {
+                token = ((string)parameters["token"])?.Replace("[barra]", "/").Replace("#", "[sharp]");
                 var json = (string)parameters["obj"];
                 if (!string.IsNullOrEmpty(json))
                 {
@@ -117,6 +120,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     Total = atividade.capacidade;
                     _data = atividade.data;
                     _idConfiguracao = atividade.idAtividadeSessao.GetValueOrDefault();
+                    numerarVagas = atividade.flNumerarVagas;
                     if (atividade.lugares != null)
                         DisableIndex = string.Join(",", atividade.lugares.Where(p => p.disponivel == false).Select(p => p.numero));
                 }

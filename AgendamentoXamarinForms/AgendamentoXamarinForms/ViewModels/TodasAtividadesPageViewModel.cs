@@ -5,10 +5,8 @@ using Prism.Navigation;
 using Prism.Services;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using static AgendamentoXamarinForms.Models.Atividade;
 
 namespace AgendamentoXamarinForms.ViewModels
 {
@@ -103,7 +101,8 @@ namespace AgendamentoXamarinForms.ViewModels
                     if (obj.flNumerarVagas)
                     {
                         var json = JsonConvert.SerializeObject(obj).Replace("/", "[barra]").Replace("#", "[sharp]");
-                        await _navigationService.NavigateAsync($"NumeracaoVagaPage?obj={json}",null, true);
+                        var pToken = token.Replace("/", "[barra]").Replace("#", "[sharp]");
+                        await _navigationService.NavigateAsync($"NumeracaoVagaPage?obj={json}&token={pToken}",null, true);
                         return;
                     }
                     else
@@ -116,7 +115,7 @@ namespace AgendamentoXamarinForms.ViewModels
                         }
                         else
                         {
-                            await LoadAsync();
+                            AlterDate("");
                         }
                         AtivarLoad(false);
                     }
@@ -130,7 +129,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     }
                     else
                     {
-                        await LoadAsync();
+                        AlterDate("");
                     }
                     AtivarLoad(false);
                     break;
@@ -143,7 +142,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     }
                     else
                     {
-                        await LoadAsync();
+                        AlterDate("");
                     }
                     AtivarLoad(false);
                     break;
@@ -153,7 +152,8 @@ namespace AgendamentoXamarinForms.ViewModels
         private async void DetalhesAtividade(Atividade obj)
         {
             var json = JsonConvert.SerializeObject(obj).Replace("/", "[barra]").Replace("#", "[sharp]");
-            await _navigationService.NavigateAsync($"DetalhesAtividadePage?obj={json}");
+            var pToken = token.Replace("/", "[barra]").Replace("#", "[sharp]");
+            await _navigationService.NavigateAsync($"DetalhesAtividadePage?obj={json}&token={pToken}");
         }
 
         public override async void MyOnNavigatedTo(NavigationParameters parameters)

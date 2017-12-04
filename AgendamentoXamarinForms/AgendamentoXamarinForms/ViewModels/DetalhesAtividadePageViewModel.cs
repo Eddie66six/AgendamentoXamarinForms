@@ -16,6 +16,7 @@ namespace AgendamentoXamarinForms.ViewModels
         public ICommand AcaoCommand { get; }
 
         private Atividade _atividade;
+        private string _token = null;
 
         public Atividade Atividade
         {
@@ -35,6 +36,8 @@ namespace AgendamentoXamarinForms.ViewModels
             AtivarLoad(true);
             if (parameters.ContainsKey("cancelado")) return;
             if (!parameters.ContainsKey("obj")) _navigationService.GoBackAsync();
+
+            _token = ((string)parameters["token"])?.Replace("[barra]", "/").Replace("#", "[sharp]");
             var json = (string)parameters["obj"];
             if (!string.IsNullOrEmpty(json))
                 Atividade = JsonConvert.DeserializeObject<Atividade>(json.Replace("[barra]", "/").Replace("#", "[sharp]"));
@@ -50,13 +53,13 @@ namespace AgendamentoXamarinForms.ViewModels
                     if (Atividade.flNumerarVagas)
                     {
                         var json = JsonConvert.SerializeObject(Atividade).Replace("/", "[barra]").Replace("#", "[sharp]");
-                        await _navigationService.NavigateAsync($"NumeracaoVagaPage?obj={json}", null, true);
+                        await _navigationService.NavigateAsync($"NumeracaoVagaPage?obj={json}&token={_token}", null, true);
                         return;
                     }
                     else
                     {
                         AtivarLoad(true);
-                        var resultP = await api.ParticiparDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", Atividade.idAtividadeSessao.GetValueOrDefault(), Atividade.data, null);
+                        var resultP = await api.ParticiparDaAtividade(_token, Atividade.idAtividadeSessao.GetValueOrDefault(), Atividade.data, null);
                         if (resultP == null || resultP.Item1 != null)
                         {
                             await _dialogService.DisplayAlertAsync("Erro", resultP?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -70,7 +73,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     break;
                 case ButtonValue.Fila:
                     AtivarLoad(true);
-                    var resultF = await api.EntrarNaFilaDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", Atividade.data, Atividade.idAtividadeSessao.GetValueOrDefault());
+                    var resultF = await api.EntrarNaFilaDaAtividade(_token, Atividade.data, Atividade.idAtividadeSessao.GetValueOrDefault());
                     if (resultF == null || resultF.Item1 != null)
                     {
                         await _dialogService.DisplayAlertAsync("Erro", resultF?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
@@ -83,7 +86,7 @@ namespace AgendamentoXamarinForms.ViewModels
                     break;
                 case ButtonValue.Sair:
                     AtivarLoad(true);
-                    var resultS = await api.SairDaAtividade("txyy5LcO+xUgHZb+ohZSDw==", Atividade.data, Atividade.idAtividadeSessao.GetValueOrDefault());
+                    var resultS = await api.SairDaAtividade(_token, Atividade.data, Atividade.idAtividadeSessao.GetValueOrDefault());
                     if (resultS == null || resultS.Item1 != null)
                     {
                         await _dialogService.DisplayAlertAsync("Erro", resultS?.Item1.errors[0].value ?? "Ocorreu um erro", "OK");
