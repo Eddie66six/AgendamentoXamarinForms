@@ -27,7 +27,7 @@ namespace AgendamentoXamarinForms.Services
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync($"{_baseUrl}atividade?token={clienteToken}&data={data.ToString("yyyy-MM-dd")}&flApenasDisponiveis={apenasDisponiveis}");
+                HttpResponseMessage response = await client.GetAsync($"{_baseUrl}atividade?token={clienteToken}&data={data.ToString("yyyy-MM-dd")}&flApenasDisponiveis={apenasDisponiveis}&mobile=true&wod=false");
                 var result = await response.Content.ReadAsStringAsync();
                 if (result == null || (response.StatusCode != System.Net.HttpStatusCode.BadRequest && response.StatusCode != System.Net.HttpStatusCode.OK))
                     return null;
